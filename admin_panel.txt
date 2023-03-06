@@ -1,0 +1,98 @@
+1. install laravel package   
+composer create-project --prefer-dist laravel/laravel:^7.0 blog
+
+2. Auth command and npm install
+
+composer require laravel/ui:^2.4
+php artisan ui vue --auth
+npm install
+npm run dev
+
+3. create database
+
+4. before migration add ( $table->integer('role')->default('0'); ) field in user table then run migration command php artisan migrate
+
+5. loginController
+use Auth;
+
+comment =  protected $redirectTo = RouteServiceProvider::HOME;
+
+public function authenticated(){
+        if(Auth::user()->role == "1")//1=admin 
+        {
+            return redirect('admin/dashboard')->with('status','welcome to Admin Dashboard');
+        }
+        else if(Auth::user()->role == "0")//0=normal user
+        {
+            return redirect('/home')->with('status','you successfully logged in');
+        }
+        else{
+            return redirect('/');
+        }
+    }
+	
+6. create middlewere 
+
+php artisan make:middleware AdminMiddleware
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+public function handle(Request $request, Closure $next)
+    {
+        if(Auth::check())
+        {
+            if(Auth::user()->role == '1')//here "1" is admin and "0" is commen user
+            {
+                 return $next($request);
+
+            }
+            else{
+                 return redirect('/home')->with('status','Access denied as you are not an admin');
+            }
+        }
+        else{
+            return redirect('/login')->with('status','please login first');
+        }
+    }
+	
+7. kernel.php
+
+protected $routeMiddleware = ['isAdmin' => \App\Http\Middleware\AdminMiddleware::class,]
+
+8. create admin folder in views and create dashboard.blade.php
+
+9. views/layouts    
+   create folder then create blade files(header,footer,sidebar)
+   
+10. then create master file in views/layouts 
+
+<html>
+    <body>
+    @include('layouts.folder_name.navbar')
+        <div id="layoutSidenav">
+        @include('layouts.folder_name.sidebar')
+        <div id="layoutSidenav_content">
+          
+        <main>
+           @yield('content')
+        </main>
+        @include('layouts.folder_name.footer')
+    </body>
+</html>
+
+
+11. create admin folder in controller then create Controller 
+ php artisan make:controller Admin/AdminController
+
+ public function index(){
+           return view('admin.dashboard');
+    }
+
+12. then define route for middleware 
+
+Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function (){
+    Route::get('/dashboard', [App\Http\Controllers\Admin\AdminController::class, 'index']);
+});
+
+13. run commend php artisan serve

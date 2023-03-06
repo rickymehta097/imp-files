@@ -1,0 +1,79 @@
+1. How to get product in wordpress?
+
+@->   <?php  
+    $args = array(
+        'post_type'      => 'product',
+        'posts_per_page' => -1,
+        'product_cat'    => 'phone'
+    );
+
+    $loop = new WP_Query( $args );
+
+    while ( $loop->have_posts() ) : $loop->the_post();
+        global $product;
+        // echo '<br /><a href="'.get_permalink().'">' . woocommerce_get_product_thumbnail().' '.get_the_title().'</a>';
+        echo "<div>";
+        echo '<a href="'. get_permalink() .'">';
+        echo "<div>". woocommerce_get_product_thumbnail()  ."</div" ;
+        echo "<div>". get_the_title() ."</div>" ;
+        echo "<p>". $product->get_price() ."</p>";
+        echo "<p>". the_excerpt() ."</p>";
+        echo "</a>";
+        echo "</div>";
+
+    endwhile;
+
+    wp_reset_query();
+?>
+
+
+2. How to get categories in wordpress?
+
+@->  <?php 
+$prod_categories = get_terms( 'product_cat', array(
+        'orderby'    => 'name',
+        'order'      => 'ASC',
+        'hide_empty' => true
+    ));
+echo "<pre>";
+print_r($prod_categories);
+echo "</pre>";
+    foreach( $prod_categories as $prod_cat ) :
+        $cat_thumb_id = get_woocommerce_term_meta( $prod_cat->term_id, 'thumbnail_id', true );
+        $shop_catalog_img = wp_get_attachment_image_src( $cat_thumb_id, 'shop_catalog' );
+        $term_link = get_term_link( $prod_cat, 'product_cat' );?>
+
+        <a href="<?php echo $term_link; ?>"><img src="<?php echo $shop_catalog_img[0]; ?>" alt="<?php echo $prod_cat->name; ?>" /></a>
+
+    <?php endforeach; wp_reset_query();
+    ?>
+
+3. How to get post categories in wordpress?
+
+@->  <?php 
+$args = array(
+    'numberposts'   => 20,
+    'category_name'   => 'business'
+);
+$my_posts = get_posts( $args );
+
+if( ! empty( $my_posts ) ){
+    foreach ( $my_posts as $p ){
+        echo '<li><a href="' . get_permalink( $p->ID ) . '">' 
+        . $p->post_title . '</a></li>';
+    }
+}
+
+?>
+
+4. how to dynamic logo in wordpress?
+
+@-> <?php
+        $custom_logo_id = get_theme_mod( 'custom_logo' );
+      $logo = wp_get_attachment_image_src( $custom_logo_id , 'full' );
+      if ( has_custom_logo() ) {
+        echo '<img src="' . esc_url( $logo[0] ) . '" alt="' . get_bloginfo( 'name' ) . '">';
+      } else {
+        echo '<h1>' . get_bloginfo('name') . '</h1>';
+      }
+      ?>

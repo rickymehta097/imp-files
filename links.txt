@@ -1,0 +1,24 @@
+    How to create custom widget in wordpress.
+   
+    Here is the link:--  https://www.greengeeks.in/tutorials/how-to-place-a-header-widget-in-wordpress/
+	
+    how to create child theme tutorial.
+	
+    Here is the link:--  https://www.makeuseof.com/create-wordpress-child-theme/
+	
+    How to create google cloud api.
+	
+    create new API    :--  https://console.cloud.google.com/apis/dashboard?project=numeric-virtue-368711&supportedpurview=project
+                     
+    Here is the link:--  https://wpmailsmtp.com/docs/how-to-set-up-the-gmail-mailer-in-wp-mail-smtp/?utm_source=WordPress&utm_medium=plugin-settings&utm_campaign=liteplugin&utm_content=Gmail%20documentation
+
+    ACF url 
+
+    Hear is the link:- https://www.advancedcustomfields.com/resources/textarea/
+
+
+
+    Wordpress map :-- https://developer.wordpress.org/files/2014/10/Screenshot-2019-01-23-00.20.04.png
+
+
+    Screenshot:-- https://prnt.sc/gYKrK_96S1cz
